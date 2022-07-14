@@ -2,7 +2,7 @@
 /** @var $model \app\models\User */
 ?>
 
-<h1>Login</h1>
+<h1>Admin Login</h1>
 
 <div class="container">
   

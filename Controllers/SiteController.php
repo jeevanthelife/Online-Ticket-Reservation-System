@@ -26,9 +26,10 @@ use App\Core\Request;
     {
         return $this->render('contact');
     }
-    public function handleContact($request)
+    public function handleContact(Request $request)
     {
         $body = $request->getBody();
         return 'Handling Submitted Data.';
     }
  }
+ 

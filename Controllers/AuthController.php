@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 use App\Core\Application;
 use App\Core\Controller;
+use App\Core\MiddleWares\AuthMiddleware;
+use App\Core\Request;
+use App\Core\Response;
+use App\Models\LoginForm;
 use App\models\User;
 
 /**
@@ -15,10 +19,54 @@ use App\models\User;
 
  class AuthController extends Controller
  {
-    public function login()
+    public function __construct()
     {
+        $this->registerMiddleware(new AuthMiddleware(['profile']));
+    }
+    
+    public function login(Request $request, Response $response)
+    {
+        $loginForm = new LoginForm();
+        if ($request->isPost()) {
+            $loginForm->loadData($request->getBody());
+
+            
+            if ($loginForm->validate() && $loginForm->login()) {
+                $response->redirect('/');
+                return;
+            }
+        }
+        
         $this->setLayout('auth');
-        return $this->render('login');
+        return $this->render('login', [
+            'model' => $loginForm
+        ]);
+    }
+
+    public function adminLogin(Request $request, Response $response)
+    {
+        $loginForm = new LoginForm();
+        if ($request->isPost()) {
+            $loginForm->loadData($request->getBody());
+
+            
+            if ($loginForm->validate() && $loginForm->adminLogin()) {
+                $response->redirect('/dashboard');
+                return;
+            }
+        }
+        
+        $this->setLayout('auth');
+        return $this->render('adminLogin', [
+            'model' => $loginForm
+        ]);
+    }
+    
+    public function dashboard()
+    {
+        
+        $this->setLayout('auth');
+        return $this->render('dashboard');
     }
     
     public function register($request)
@@ -43,5 +91,17 @@ use App\models\User;
             'model' => $user
         ]);
     }
+
+    public function profile(Request $request, Response $response)
+    {
+        return $this->render('profile');
+    }
+
+    public function logout(Request $request, Response $response)
+    {
+        Application::$app->logout();
+        $response->redirect('/');
+    }
+    
 }
  

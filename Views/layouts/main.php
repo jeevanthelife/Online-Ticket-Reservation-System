@@ -1,6 +1,9 @@
 <?php 
 use App\Core\Application; 
+use App\Models\User;
+
 ?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -26,6 +29,7 @@ use App\Core\Application;
           <a class="nav-link active" href="/contact">Contact</a>
         </li>
       </ul>
+      <?php if (Application::isGuest()): ?>
       <ul class="navbar-nav ml-auto" style="float: right;">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/login">LogIn</a>
@@ -34,6 +38,19 @@ use App\Core\Application;
           <a class="nav-link active" href="/register">Register</a>
         </li>
       </ul>
+      <?php else: ?>
+      <ul class="navbar-nav" style="float: right;">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/profile">Profile
+        </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/logout">Welcome <?php echo Application::$app->user->getDisplayName() ?>
+          (Log Out)
+        </a>
+        </li>
+      </ul>
+      <?php endif; ?>
     </div>
   </div>
 </nav>
