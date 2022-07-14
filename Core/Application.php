@@ -16,9 +16,7 @@ use App\Core\Database;
 class Application
 {
     public static string $ROOT_DIR;
-
     public string $layout = 'main';
-    
     public string $userClass;
     public Router $router;
     public Request $request;

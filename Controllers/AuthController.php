@@ -22,6 +22,7 @@ use App\models\User;
     public function __construct()
     {
         $this->registerMiddleware(new AuthMiddleware(['profile']));
+        $this->registerMiddleware(new AuthMiddleware(['dashboard']));
     }
     
     public function login(Request $request, Response $response)
@@ -62,10 +63,9 @@ use App\models\User;
         ]);
     }
     
-    public function dashboard()
+    public function dashboard(Request $request, Response $response)
     {
         
-        $this->setLayout('auth');
         return $this->render('dashboard');
     }
     

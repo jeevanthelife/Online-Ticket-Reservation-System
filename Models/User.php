@@ -16,12 +16,15 @@ class User extends UserModel
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     const STATUS_DELETED = 2;
+    const ROLE_ADMIN = 1;
+    const ROLE_USER = 2;
     public string $name = '';
     public string $email = '';
     public string $phone = '';
     public string $gender = '';
     public string $username = '';
     public int $status = self::STATUS_INACTIVE;
+    public int $role = self::ROLE_USER;
     public string $password = '';
     public string $confirmpassword = '';
     
@@ -60,7 +63,7 @@ class User extends UserModel
 
     public function attributes(): array
     {
-        return ['name', 'gender', 'email', 'phone', 'username', 'password', 'status'];
+        return ['name', 'gender', 'email', 'phone', 'username', 'password', 'status', 'role'];
     }
     
     public function labels(): array
