@@ -16,6 +16,7 @@ use App\Models\User;
 class LoginForm extends Model
  {
 
+    public string $role = '';
     public string $username = '';
     public string $password = '';
     
@@ -53,7 +54,13 @@ class LoginForm extends Model
     
     public function adminLogin()
     {
-        $user = User::findOne(['username' => $this->username]);
+        $user = User::findRole(['username' => $this->username]);
+        
+        if ($user->role !== 1) {
+            $this->addError('username', 'Username is not an admin.');
+            return false;
+        }
+
         if (!$user) {
             $this->addError('username', 'Username does not exists.');
             return false;
