@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Application;
 use App\Core\Controller;
 use App\Core\MiddleWares\AuthMiddleware;
+use App\Core\MiddleWares\UserAuthMiddleware;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\LoginForm;
@@ -22,7 +23,7 @@ use App\models\User;
     public function __construct()
     {
         $this->registerMiddleware(new AuthMiddleware(['profile']));
-        $this->registerMiddleware(new AuthMiddleware(['dashboard']));
+        $this->registerMiddleware(new UserAuthMiddleware(['dashboard']));
     }
     
     public function login(Request $request, Response $response)
@@ -52,13 +53,13 @@ use App\models\User;
 
             
             if ($loginForm->validate() && $loginForm->adminLogin()) {
-                $response->redirect('/dashboard');
+                $response->redirect('dashboard');
                 return;
             }
         }
         
         $this->setLayout('auth');
-        return $this->render('adminLogin', [
+        return $this->render('admin/adminLogin', [
             'model' => $loginForm
         ]);
     }
@@ -66,7 +67,7 @@ use App\models\User;
     public function dashboard(Request $request, Response $response)
     {
         
-        return $this->render('dashboard');
+        return $this->render('admin/dashboard');
     }
     
     public function register($request)
@@ -100,6 +101,12 @@ use App\models\User;
     public function logout(Request $request, Response $response)
     {
         Application::$app->logout();
+        $response->redirect('/');
+    }
+    
+    public function adminLogout(Request $request, Response $response)
+    {
+        Application::$app->adminLogout();
         $response->redirect('/');
     }
     

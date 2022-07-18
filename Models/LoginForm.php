@@ -39,6 +39,11 @@ class LoginForm extends Model
     public function login()
     {
         $user = User::findOne(['username' => $this->username]);
+        if ($user->role === 1) {
+            $this->addError('username', 'You\'re an admin. Please, Login from Admin Login Page!');
+            return false;
+        }
+        
         if (!$user) {
             $this->addError('username', 'Username does not exists.');
             return false;
@@ -56,8 +61,8 @@ class LoginForm extends Model
     {
         $user = User::findRole(['username' => $this->username]);
         
-        if ($user->role !== 1) {
-            $this->addError('username', 'Username is not an admin.');
+        if ($user->role === 2) {
+            $this->addError('username', 'Username is not an admin. Please login from the User Login Page.');
             return false;
         }
 
@@ -71,7 +76,7 @@ class LoginForm extends Model
             return false;
         }
        
-        return Application::$app->login($user);
+        return Application::$app->adminLogin($user);
     }
     
 

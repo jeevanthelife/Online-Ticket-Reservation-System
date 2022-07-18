@@ -1,8 +1,8 @@
-<!-- <?php
+<?php
 /** @var $model \app\models\User */
 ?>
 
-<h1>Admin Login</h1>
+<h1>Admin Login Page w</h1>
 
 <div class="container">
   
@@ -24,4 +24,4 @@
 <br>
 
 Not a Member? <button><a href="/register">Register</a></button>
- -->
+

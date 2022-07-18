@@ -24,6 +24,7 @@ class Application
     public Database $db;
     public Session $session;
     public ?DbModel $user;
+    public ?DbModel $admin;
 
 
     public static Application $app;
@@ -51,11 +52,25 @@ class Application
             $this->user = null;
         }
         
+        $primaryValue = $this->session->get('admin');
+        if ($primaryValue) {
+            $primaryKey = $this->userClass::primaryKey();
+            $this->admin = $this->userClass::findRole([$primaryKey => $primaryValue]);
+
+        } else {
+            $this->admin = null;
+        }
+        
     }
 
     public static function isGuest()
     {
         return !self::$app->user;
+    }
+    
+    public static function isUser()
+    {
+        return !self::$app->admin;
     }
 
     public function run()
@@ -100,7 +115,7 @@ class Application
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
-        $this->session->set('user', $primaryValue);
+        $this->session->set('admin', $primaryValue);
         return true;
 
     }
@@ -109,6 +124,13 @@ class Application
     {
         $this->user = null;
         $this->session->remove('user');
+
+    }
+    
+    public function adminLogout()
+    {
+        $this->admin = null;
+        $this->session->remove('admin');
 
     }
     

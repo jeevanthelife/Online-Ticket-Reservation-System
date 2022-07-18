@@ -11,6 +11,31 @@ use App\Models\User;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Online Ticket Reservation System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+		ul.navbar-nav {
+			margin-right: auto;
+		}
+		
+    ul.navbar-nav-admin {
+			margin-right: auto;
+		}
+    
+    ul.navbar-nav-user {
+			margin-left: 50px;
+		}
+    
+    ul.navbar-nav-login {
+			margin-left: auto;
+		}
+    
+    ul.navbar-nav-admin-logout {
+			margin-left: auto;
+		}
+    
+    ul {
+			list-style-type:none;
+		}
+	</style>
   </head>
   <body>
     
@@ -21,7 +46,22 @@ use App\Models\User;
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
+      <?php if (!Application::isUser()): ?>
+        <ul class="navbar-nav-admin">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/dashboard">DASHBOARD
+        </a>
+        </li>
+        </ul>
+      <ul class="navbar-nav-admin-logout">
+        <li class="nav-item-right">
+          <a class="nav-link active" aria-current="page" href="/adminLogout">Welcome <?php echo Application::$app->admin->getDisplayName() ?>
+          (Log Out)
+        </a>
+        </li>
+      </ul>
+      <?php elseif (Application::isGuest()): ?>
+        <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
@@ -29,21 +69,32 @@ use App\Models\User;
           <a class="nav-link active" href="/contact">Contact</a>
         </li>
       </ul>
-      <?php if (Application::isGuest()): ?>
-      <ul class="navbar-nav ml-auto" style="float: right;">
+      <ul class="navbar-nav-login">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/login">LogIn</a>
         </li>
+      </ul>
+      <ul class="navbar-nav-register">
         <li class="nav-item">
           <a class="nav-link active" href="/register">Register</a>
         </li>
       </ul>
       <?php else: ?>
-      <ul class="navbar-nav" style="float: right;">
+        <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/contact">Contact</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav-user mr-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/profile">Profile
         </a>
         </li>
+      </ul>
+      <ul class="navbar-nav-user-logout  mr-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/logout">Welcome <?php echo Application::$app->user->getDisplayName() ?>
           (Log Out)

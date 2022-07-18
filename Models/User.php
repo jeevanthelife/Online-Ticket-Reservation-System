@@ -80,7 +80,7 @@ class User extends UserModel
 
     public function getDisplayName(): string
     {
-        return $this->name;
+        return $this->username;
     }
 
     

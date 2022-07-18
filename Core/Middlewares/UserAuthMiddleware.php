@@ -15,7 +15,7 @@ use App\Core\Exception\UserForbiddenException;
  */
 
 
-class AuthMiddleware extends BaseMiddleware
+class UserAuthMiddleware extends BaseMiddleware
 {
     public array $actions = [];
 
@@ -26,7 +26,7 @@ class AuthMiddleware extends BaseMiddleware
     
     public function execute()
     {
-        if (Application::isGuest()) {
+        if (Application::isUser()) {
             if (empty($this->actions) || in_array(Application::$app->controller->action, $this->actions)) {
                 throw new ForbiddenException();
             }
